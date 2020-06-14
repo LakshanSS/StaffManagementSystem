@@ -22,3 +22,7 @@ The following REST APIs should be exposed
 ### Extra requirements
 - Swagger documentation of the APIs have to be exposed
 - Need to add current date and last updated date of a given document
+
+
+## MongoDB Configuration
+MongoDB configurations can be added in https://github.com/LakshanSS/StaffManagementSystem/blob/master/src/main/resources/application.properties
