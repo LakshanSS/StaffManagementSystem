@@ -2,12 +2,14 @@ package lk.lakshan.staffmanagement;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
-public class StaffmanagementApplication {
+@EnableSwagger2
+public class StaffManagementApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(StaffmanagementApplication.class, args);
+        SpringApplication.run(StaffManagementApplication.class, args);
     }
 
 }

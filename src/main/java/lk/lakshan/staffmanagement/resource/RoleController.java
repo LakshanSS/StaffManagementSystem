@@ -3,7 +3,6 @@ package lk.lakshan.staffmanagement.resource;
 import lk.lakshan.staffmanagement.model.Role;
 import lk.lakshan.staffmanagement.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,9 +54,17 @@ public class RoleController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/findRoleByNicNo/{nicNo}")
-    public ResponseEntity findRoleByNICNo(@PathVariable String nicNo, Pageable pageable) {
-        return ResponseEntity.ok(repository.findByNicNo(nicNo, pageable));
+    @GetMapping("/findRoleByNicNo")
+    public ResponseEntity findRoleByNICNo(@PathVariable String nicNo) {
+        return ResponseEntity.ok(repository.findRoleByNicNo(nicNo));
+    }
+
+    @GetMapping("/findRoleByOrgAndType")
+    public ResponseEntity findRoleByOrgAndType(@RequestParam(value = "organization") String organization,
+                                               @RequestParam(value = "roleType") String roleType) {
+        List<Role> result = repository.findRoleByOrganizationAndRoleType(organization, roleType);
+        return ResponseEntity.ok(repository.findRoleByOrganizationAndRoleType(organization, roleType));
+
     }
 
 }
