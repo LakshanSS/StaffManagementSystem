@@ -3,6 +3,7 @@ package lk.lakshan.staffmanagement.resource;
 import lk.lakshan.staffmanagement.model.Role;
 import lk.lakshan.staffmanagement.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,14 +16,15 @@ public class RoleController {
     @Autowired
     private RoleRepository repository;
 
-    @PostMapping("/roles")
-    public ResponseEntity saveRole(@RequestBody Role role) {
-        return ResponseEntity.ok(repository.save(role));
-    }
-
     @GetMapping("/roles")
     public ResponseEntity<List<Role>> getRoles() {
         return ResponseEntity.ok(repository.findAll());
+    }
+
+    @PostMapping("/roles")
+    public ResponseEntity<String> saveRole(@RequestBody Role role) {
+        repository.save(role);
+        return ResponseEntity.ok("Role " + role.getId() + " added successfully");
     }
 
     @GetMapping("/roles/{id}")
@@ -36,11 +38,12 @@ public class RoleController {
     }
 
     @PutMapping("roles/{id}")
-    public ResponseEntity<Role> updateRole(@PathVariable int id, @RequestBody Role role) {
+    public ResponseEntity<String> updateRole(@PathVariable int id, @RequestBody Role role) {
         if (!repository.findById(id).isPresent()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(repository.save(role));
+        repository.save(role);
+        return ResponseEntity.ok("Role " + role.getId() + " updated successfully");
     }
 
     @DeleteMapping("/roles/{id}")
@@ -52,8 +55,9 @@ public class RoleController {
         return ResponseEntity.ok().build();
     }
 
-    /*@GetMapping("/roles?organization={organization}")
-    public List<Role> findRoleByNICNo(@PathVariable String organization, Pageable pageable) {
-        return repository.findRoleByOrganization(organization, pageable);
-    }*/
+    @GetMapping("/findRoleByNicNo/{nicNo}")
+    public ResponseEntity findRoleByNICNo(@PathVariable String nicNo, Pageable pageable) {
+        return ResponseEntity.ok(repository.findByNicNo(nicNo, pageable));
+    }
+
 }
