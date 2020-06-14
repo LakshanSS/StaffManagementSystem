@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,12 +38,20 @@ public class RoleController {
     }
 
     @PutMapping("roles/{id}")
-    public ResponseEntity<String> updateRole(@PathVariable int id, @RequestBody Role role) {
-        if (!repository.findById(id).isPresent()) {
+    public ResponseEntity<String> updateRole(@PathVariable int id, @RequestBody Role newRole) {
+        Optional<Role> role = repository.findById(id);
+        if (!role.isPresent()) {
             return ResponseEntity.notFound().build();
         }
-        repository.save(role);
-        return ResponseEntity.ok("Role " + role.getId() + " updated successfully");
+
+        role.get().setFirstName(newRole.getFirstName());
+        role.get().setLastName(newRole.getLastName());
+        role.get().setNicNo(newRole.getNicNo());
+        role.get().setOrganization(newRole.getOrganization());
+        role.get().setRoleType(newRole.getRoleType());
+        role.get().setLastUpdatedTimestamp(LocalDateTime.now());
+        repository.save(role.get());
+        return ResponseEntity.ok("Role updated successfully");
     }
 
     @DeleteMapping("/roles/{id}")
@@ -54,7 +63,7 @@ public class RoleController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/findRoleByNicNo")
+    @GetMapping("/findRoleByNicNo/{nicNo}")
     public ResponseEntity findRoleByNICNo(@PathVariable String nicNo) {
         return ResponseEntity.ok(repository.findRoleByNicNo(nicNo));
     }
@@ -64,7 +73,5 @@ public class RoleController {
                                                @RequestParam(value = "roleType") String roleType) {
         List<Role> result = repository.findRoleByOrganizationAndRoleType(organization, roleType);
         return ResponseEntity.ok(repository.findRoleByOrganizationAndRoleType(organization, roleType));
-
     }
-
 }

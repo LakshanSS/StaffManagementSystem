@@ -2,6 +2,7 @@ package lk.lakshan.staffmanagement.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import java.time.LocalDateTime;
 
 @Document(collection = "role")
 public class Role {
@@ -13,6 +14,8 @@ public class Role {
     private String lastName;
     private String roleType;
     private String organization;
+    private LocalDateTime createdTimestamp = LocalDateTime.now();
+    private LocalDateTime lastUpdatedTimestamp = LocalDateTime.now();
 
     public Role() {
     }
@@ -74,6 +77,22 @@ public class Role {
         this.organization = organization;
     }
 
+    public LocalDateTime getCreatedTimestamp() {
+        return createdTimestamp;
+    }
+
+    public void setCreatedTimestamp(LocalDateTime createdTimestamp) {
+        this.createdTimestamp = createdTimestamp;
+    }
+
+    public LocalDateTime getLastUpdatedTimestamp() {
+        return lastUpdatedTimestamp;
+    }
+
+    public void setLastUpdatedTimestamp(LocalDateTime lastUpdatedTimestamp) {
+        this.lastUpdatedTimestamp = lastUpdatedTimestamp;
+    }
+
     @Override
     public String toString() {
         return "Role{" +
@@ -83,6 +102,8 @@ public class Role {
                 ", lastName='" + lastName + '\'' +
                 ", roleType='" + roleType + '\'' +
                 ", organization='" + organization + '\'' +
+                ", createdTimestamp=" + createdTimestamp +
+                ", lastUpdatedTimestamp=" + lastUpdatedTimestamp +
                 '}';
     }
 }
